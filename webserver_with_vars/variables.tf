@@ -11,7 +11,7 @@ variable "ssh_port" {
 }
 
 variable "ip_address" {
-  default = "xxx.xxx.xxx.xxx/32"
+  default = "102.222.182.45/32"
 }
 
 variable "ami" {
