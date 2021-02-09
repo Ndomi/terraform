@@ -3,14 +3,14 @@ resource "aws_security_group" "web_SG" {
     from_port = 80
     protocol = "tcp"
     to_port = 80
-    cidr_blocks = ["102.222.182.45/32"]
+    cidr_blocks = ["xxx.xxx.xxx.xxx/32"]
   }
 
   ingress {
     from_port = 22
     protocol = "tcp"
     to_port = 22
-    cidr_blocks = ["102.222.182.45/32"]
+    cidr_blocks = ["xxx.xxx.xxx.xxx/32"]
   }
 
   egress {
