@@ -3,11 +3,11 @@ variable "region" {
 }
 
 variable "http_port" {
-  default = "http_port"
+  default = 80
 }
 
 variable "ssh_port" {
-  default = "ssh_port"
+  default = 22
 }
 
 variable "ip_address" {
@@ -22,6 +22,6 @@ variable "instance_type" {
   default = "t2.micro"
 }
 
-variable "K-name" {
+variable "key" {
   default = "New_Key"
 }

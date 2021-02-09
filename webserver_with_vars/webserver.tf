@@ -1,15 +1,15 @@
 resource "aws_instance" "webserver" {
   ami = var.ami
   instance_type = var.instance_type
-  security_groups = [aws_security_group.web_SG.id]
-  key_name = "K-name"
+  vpc_security_group_ids = [aws_security_group.web_SG.id]
+  key_name = var.key
 
   tags = {
     Name = "Dev Webserver with variables"
   }
 
   user_data = <<EOF
-  #!/bin/bash
+#!/bin/bash
   exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
   /usr/bin/apt-get update
   DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get upgrade -yq
