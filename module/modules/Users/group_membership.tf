@@ -16,14 +16,14 @@ resource "aws_iam_group_membership" "operations" {
   ]
 }
 
-resource "aws_iam_group_membership" "devops" {
+/*resource "aws_iam_group_membership" "devops" {
   group = aws_iam_group.devops.name
   name = "DevOps"
   users = [
     aws_iam_user.boy.name,
     aws_iam_user.tim.name
   ]
-}
+}*/
 
 resource "aws_iam_group_membership" "testers" {
   group = aws_iam_group.testers.name

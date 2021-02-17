@@ -30,7 +30,7 @@ resource "aws_iam_user" "jerry" {
   }
 }
 
-resource "aws_iam_user" "boy" {
+/*resource "aws_iam_user" "boy" {
   name = "boy"
 
   tags = {
@@ -44,7 +44,7 @@ resource "aws_iam_user" "tim" {
   tags = {
     Group = var.devops
   }
-}
+}*/
 
 resource "aws_iam_user" "marry" {
   name = "marry"

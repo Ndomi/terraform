@@ -5,11 +5,11 @@ resource "aws_iam_policy_attachment" "dev_policy" {
   depends_on = [aws_iam_policy.developers]
 }
 
-resource "aws_iam_policy_attachment" "devops_policy" {
+/*resource "aws_iam_policy_attachment" "devops_policy" {
   name = "ops_policy"
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
   groups = [aws_iam_group.devops.name]
-}
+}*/
 
 resource "aws_iam_policy_attachment" "ops_policy" {
   name = "ops_policy"
