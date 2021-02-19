@@ -9,3 +9,14 @@ variable "ec2_instance_type" {
 variable "key" {
   default = "New_Key"
 }
+
+variable "http_port" {
+  default = 80
+}
+
+/*
+variable "public_subnet_cidr_A" {
+}
+
+variable "public_subnet_cidr_B" {
+}*/

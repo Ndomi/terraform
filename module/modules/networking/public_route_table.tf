@@ -13,8 +13,14 @@ resource "aws_route_table" "internet" {
   depends_on = [aws_vpc.main_vpc ,aws_internet_gateway.IGW_TF]
 }
 
-resource "aws_route_table_association" "public_RT_association" {
+resource "aws_route_table_association" "public_A_RT_association" {
   route_table_id = aws_route_table.internet.id
-  subnet_id      = aws_subnet.public_subnet.id
-  depends_on = [aws_subnet.public_subnet, aws_route_table.internet]
+  subnet_id      = aws_subnet.public_subnet_A.id
+  depends_on = [aws_subnet.public_subnet_A, aws_route_table.internet]
+}
+
+resource "aws_route_table_association" "public_B_RT_association" {
+  route_table_id = aws_route_table.internet.id
+  subnet_id      = aws_subnet.public_subnet_B.id
+  depends_on = [aws_subnet.public_subnet_B, aws_route_table.internet]
 }
