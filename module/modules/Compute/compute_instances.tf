@@ -44,14 +44,15 @@ resource "aws_instance" "Webapp_server_A" {
     Name = "Private EC2 A"
   }
 
-  user_data = <<EOF
+  user_data = file("${path.module}/user_data.sh")
+/*  user_data = <<EOF
               #!/bin/bash
               yum update -y
               yum install -y httpd
               systemctl start httpd.service
               systemctl enable httpd.service
               echo " Public $(hostname -f)" > /var/www/html/index.html
-              EOF
+              EOF*/
 
   depends_on = [module.networking.vpc_id, module.networking.publicSN_B]
 }
@@ -68,14 +69,15 @@ resource "aws_instance" "Webapp_server_B" {
     Name = "Private EC2 B"
   }
 
-  user_data = <<EOF
+  user_data = file("${path.module}/user_data.sh")
+/*  user_data = <<EOF
               #!/bin/bash
               yum update -y
               yum install -y httpd
               systemctl start httpd.service
               systemctl enable httpd.service
               echo " Public $(hostname -f)" > /var/www/html/index.html
-              EOF
+              EOF*/
 
   depends_on = [module.networking.vpc_id, module.networking.publicSN_B]
 }
