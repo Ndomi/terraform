@@ -147,3 +147,14 @@ resource "aws_lb_listener" "listener_A" {
 
   depends_on = [aws_alb_target_group.alb_front_http, aws_alb.webapp_loadbalancer]
 }
+
+        ####  How to Add Security Group Rules, without editing the Module ####
+/*
+resource "aws_security_group_rule" "allow_test" {
+  from_port = 10000
+  protocol = "tcp"
+  security_group_id = module.networking.publicSG_A
+  to_port = 10000
+  type = "ingress"
+  cidr_blocks = ["xxx.xxx.xxx.xxx/xx"]
+}*/
