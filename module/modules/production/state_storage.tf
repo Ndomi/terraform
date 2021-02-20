@@ -25,8 +25,10 @@ terraform {
   }
 }
 
-/*
-resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
+#####  Enable the below code to prevent multiple user to edit the state ######
+##### Charges apply #####
+
+/*resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
   hash_key = "LockID"
   name = "terraform-state-lock-dynamo"
   read_capacity = 20
