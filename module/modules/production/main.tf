@@ -1,3 +1,7 @@
+/*module "store-state" {
+  source = "../state_storage"
+}*/
+
 module "users_group_creation" {
   source = "../Users"
 }
