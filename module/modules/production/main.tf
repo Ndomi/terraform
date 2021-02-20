@@ -5,15 +5,15 @@ module "users_group_creation" {
 */
 
 module "users_group_creation" {
-  source = "git::https://github.com/Ndomi/terraform.git?ref=v0.0.1"
+  source = "git::https://github.com/Ndomi/terraform.git//module/modules/Users?ref=v0.0.1"
 }
 
 module "prod_computing" {
-  source = "../Compute"
+  source = "git::https://github.com/Ndomi/terraform.git//module/modules/Compute?ref=v0.0.1"
 }
 
 module "ec2_monitoring" {
-  source = "../Logging"
+  source = "git::https://github.com/Ndomi/terraform.git//module/modules/Logging?ref=v0.0.1"
 }
 
 ### Place holder ###

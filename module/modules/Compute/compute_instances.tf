@@ -1,5 +1,5 @@
 module "networking" {
-  source = "../networking"
+  source = "git::https://github.com/Ndomi/terraform.git//module/modules/networking?ref=v0.0.1"
 }
 
 resource "aws_instance" "Jumpbox_A" {
@@ -45,14 +45,6 @@ resource "aws_instance" "Webapp_server_A" {
   }
 
   user_data = file("${path.module}/user_data.sh")
-/*  user_data = <<EOF
-              #!/bin/bash
-              yum update -y
-              yum install -y httpd
-              systemctl start httpd.service
-              systemctl enable httpd.service
-              echo " Public $(hostname -f)" > /var/www/html/index.html
-              EOF*/
 
   depends_on = [module.networking.vpc_id, module.networking.publicSN_B]
 }
@@ -70,14 +62,6 @@ resource "aws_instance" "Webapp_server_B" {
   }
 
   user_data = file("${path.module}/user_data.sh")
-/*  user_data = <<EOF
-              #!/bin/bash
-              yum update -y
-              yum install -y httpd
-              systemctl start httpd.service
-              systemctl enable httpd.service
-              echo " Public $(hostname -f)" > /var/www/html/index.html
-              EOF*/
 
   depends_on = [module.networking.vpc_id, module.networking.publicSN_B]
 }
