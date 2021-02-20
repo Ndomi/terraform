@@ -14,6 +14,10 @@ variable "http_port" {
   default = 80
 }
 
+variable "availability_zone_B" {
+  default = "us-east-1b"
+}
+
 /*
 variable "public_subnet_cidr_A" {
 }
