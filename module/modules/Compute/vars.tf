@@ -18,6 +18,10 @@ variable "availability_zone_B" {
   default = "us-east-1b"
 }
 
+variable "availability_zone_A" {
+  default = "us-east-1a"
+}
+
 /*
 variable "public_subnet_cidr_A" {
 }
