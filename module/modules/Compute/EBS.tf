@@ -19,7 +19,7 @@ resource "aws_volume_attachment" "Webapp_server_attach_A" {
 }
 
 resource "aws_ebs_volume" "EBS_volume_B" {
-  availability_zone = var.availability_zone_A
+  availability_zone = var.availability_zone_B
 
   size = 100
   type = "gp2"
