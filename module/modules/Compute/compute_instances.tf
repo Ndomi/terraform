@@ -1,5 +1,5 @@
 module "networking" {
-  source = "git::https://github.com/Ndomi/terraform.git//module/modules/networking?ref=v0.0.15"
+  source = "git::https://github.com/Ndomi/terraform.git//module/modules/networking?ref=v0.0.16"
 }
 
 resource "aws_instance" "Jumpbox_A" {
@@ -11,7 +11,7 @@ resource "aws_instance" "Jumpbox_A" {
   key_name               = var.key
 
   tags = {
-    Name = "Public EC2 A"
+    Name = "Public EC2 A ${terraform.workspace}"
   }
 
   depends_on = [module.networking.vpc_id, module.networking.publicSN_A]
@@ -25,7 +25,7 @@ resource "aws_instance" "Jumpbox_B" {
   key_name               = var.key
 
   tags = {
-    Name = "Public EC2 B"
+    Name = "Public EC2 B ${terraform.workspace}"
   }
 
   depends_on = [module.networking.vpc_id, module.networking.publicSN_B]
@@ -42,7 +42,7 @@ resource "aws_instance" "Webapp_server_A" {
   key_name               = var.key
 
   tags = {
-    Name = "Private EC2 A"
+    Name = "Private EC2 A ${terraform.workspace}"
   }
 
   user_data = file("${path.module}/user_data.sh")
@@ -60,7 +60,7 @@ resource "aws_instance" "Webapp_server_B" {
   key_name               = var.key
 
   tags = {
-    Name = "Private EC2 B"
+    Name = "Private EC2 B ${terraform.workspace}"
   }
 
   user_data = file("${path.module}/user_data.sh")
@@ -78,7 +78,7 @@ resource "aws_alb" "webapp_loadbalancer" {
   subnets            = [module.networking.publicSN_A, module.networking.publicSN_B]
 
   tags = {
-    Name = "web_app_ALB"
+    Name = "web_app_ALB ${terraform.workspace}"
   }
 
   depends_on = [module.networking.publicSN_A, module.networking.publicSN_B, module.networking.publicSG_A, module.networking.publicSG_B]

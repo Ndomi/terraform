@@ -3,8 +3,14 @@ variable "ec2_ami" {
 }
 
 variable "ec2_instance_type" {
-  default = "t2.micro"
+  type = "map"
+  default = {
+    default = "t2.micro"
+    stage = "t2.nano"
+    prod = "t2.large"
+  }
 }
+
 
 variable "key" {
   default = "New_Key"
@@ -21,10 +27,3 @@ variable "availability_zone_B" {
 variable "availability_zone_A" {
   default = "us-east-1a"
 }
-
-/*
-variable "public_subnet_cidr_A" {
-}
-
-variable "public_subnet_cidr_B" {
-}*/
