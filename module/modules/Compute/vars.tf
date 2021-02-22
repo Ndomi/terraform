@@ -3,7 +3,7 @@ variable "ec2_ami" {
 }
 
 variable "ec2_instance_type" {
-  type = "map"
+  type = map
   default = {
     default = "t2.micro"
     stage = "t2.nano"
