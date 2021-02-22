@@ -1,5 +1,5 @@
 module "networking" {
-  source = "git::https://github.com/Ndomi/terraform.git//module/modules/networking?ref=v0.0.20"
+  source = "git::https://github.com/Ndomi/terraform.git//module/modules/networking?ref=v0.0.21"
 }
 
 resource "aws_instance" "Jumpbox_A" {
@@ -53,7 +53,7 @@ resource "aws_instance" "Webapp_server_A" {
 resource "aws_instance" "Webapp_server_B" {
 
   ami                    = var.ec2_ami
-  instance_type          = var.ec2_instance_type
+  instance_type          = lookup(var.ec2_instance_type,terraform.workspace)
   iam_instance_profile   = aws_iam_instance_profile.ec2_profile.name
   vpc_security_group_ids = [module.networking.publicSG_B]
   subnet_id              = module.networking.publicSN_B
