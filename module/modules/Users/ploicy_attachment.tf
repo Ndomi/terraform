@@ -1,6 +1,7 @@
 resource "aws_iam_policy_attachment" "dev_policy" {
   name = "dev_policy"
   policy_arn = aws_iam_policy.developers.arn
+  roles = [aws_iam_role.ec2_role.name]
   groups = [aws_iam_group.developers.name]
   depends_on = [aws_iam_policy.developers]
 }
