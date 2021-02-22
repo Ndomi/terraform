@@ -1,5 +1,5 @@
 resource "aws_iam_role" "ec2_role" {
-  name = "ec2-role"
+  name = "user_rules"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
