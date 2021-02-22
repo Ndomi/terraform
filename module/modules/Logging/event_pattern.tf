@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_event_rule" "stopped_instance" {
-  name = "capture-stopped-instances"
+  name        = "capture-stopped-instances"
   description = "Capture a Stopped Instance"
 
   event_pattern = <<EOF
@@ -24,25 +24,25 @@ resource "aws_sns_topic" "ec2_stopped" {
 }
 
 resource "aws_cloudwatch_event_target" "sns" {
-  arn = aws_sns_topic.ec2_stopped.arn
-  rule = aws_cloudwatch_event_rule.stopped_instance.name
+  arn       = aws_sns_topic.ec2_stopped.arn
+  rule      = aws_cloudwatch_event_rule.stopped_instance.name
   target_id = "EC2Stopped"
 }
 
 data "aws_iam_policy_document" "sns_topic_policy" {
   statement {
-    effect = "Allow"
+    effect  = "Allow"
     actions = ["SNS:Publish"]
 
     principals {
       identifiers = ["events.amazonaws.com"]
-      type = "Service"
+      type        = "Service"
     }
     resources = [aws_sns_topic.ec2_stopped.arn]
   }
 }
 
 resource "aws_sns_topic_policy" "default" {
-  arn = aws_sns_topic.ec2_stopped.arn
+  arn    = aws_sns_topic.ec2_stopped.arn
   policy = data.aws_iam_policy_document.sns_topic_policy.json
 }

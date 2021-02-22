@@ -1,5 +1,5 @@
 resource "aws_iam_role" "ec2_role" {
-  name = "user_rules"
+  name               = "user_rules"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -21,9 +21,9 @@ EOF
 }
 
 resource "aws_iam_policy" "developers" {
-  name = "developers"
+  name        = "developers"
   description = "This is the access policy for developers"
-  policy = <<EOF
+  policy      = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
