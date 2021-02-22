@@ -1,3 +1,26 @@
+resource "aws_iam_role" "ec2_role" {
+  name = "ec2-role"
+  assume_role_policy = <<EOF
+  {
+    "Version" = "2012-10-17"
+    "Statement" = [
+      {
+        "Action" = "sts:AssumeRole",
+        "Principal" = {
+          "Service" = "ec2.amazonaws.com"
+        },
+        "Effect" = "Allow",
+        "Sid"    = ""
+      }
+    ]
+  }
+EOF
+
+  tags = {
+    Name = "ec2-role"
+  }
+}
+
 resource "aws_iam_policy" "developers" {
   name = "developers"
   description = "This is the access policy for developers"
@@ -18,4 +41,10 @@ resource "aws_iam_policy" "developers" {
   ]
 }
 EOF
+}
+
+resource "aws_iam_role_policy_attachment" "s3-plo-attach" {
+  policy_arn = aws_iam_policy.developers.arn
+  role = aws_iam_role.ec2_role.name
+
 }
