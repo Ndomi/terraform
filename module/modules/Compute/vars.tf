@@ -6,3 +6,9 @@ variable "ec2_instance_type" {
     prod = "t2.large"
   }
 }
+
+variable "ec2_ami" {}
+variable "key" {}
+variable "http_port" {}
+variable "availability_zone_B" {}
+variable "availability_zone_A" {}

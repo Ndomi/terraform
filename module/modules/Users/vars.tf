@@ -1,15 +1,7 @@
-variable "ops" {
-  default = ""
-}
+variable "ops" {}
 
-variable "dev" {
-  default = ""
-}
+variable "dev" {}
 
-variable "testing" {
-  default = ""
-}
+variable "testing" {}
 
-variable "devops" {
-  default = ""
-}
+variable "devops" {}
