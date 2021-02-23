@@ -7,18 +7,12 @@ variable "ec2_instance_type" {
   }
 }
 
-variable "ec2_ami" {
-  default = "ami-047a51fa27710816e"
-}
-variable "key" {
-  default = "New_Key"
-}
-variable "http_port" {
-  default = 80
-}
-variable "availability_zone_B" {
-  default = "us-east-1b"
-}
-variable "availability_zone_A" {
-  default = "us-east-1a"
-}
+variable "ec2_ami" {}
+
+variable "key" {}
+
+variable "http_port" {}
+
+variable "availability_zone_B" {}
+
+variable "availability_zone_A" {}
