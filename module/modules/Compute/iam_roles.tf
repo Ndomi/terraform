@@ -24,5 +24,5 @@ EOF
 
 resource "aws_iam_instance_profile" "ec2_profile" {
   name      = "ec2_profile"
-  role      = lookup(aws_iam_role.ec2_role.name,terraform.workspace)
+  role_name      = aws_iam_role.ec2_role.name
 }
