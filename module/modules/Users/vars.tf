@@ -1,15 +1,15 @@
 variable "ops" {
-  default = ""
+  default = "operations"
 }
 
 variable "dev" {
-  default = ""
+  default = "development"
 }
 
 variable "testing" {
-  default = ""
+  default = "testers"
 }
 
 variable "devops" {
-  default = ""
+  default = "DevOps"
 }

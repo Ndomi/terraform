@@ -8,17 +8,17 @@ variable "ec2_instance_type" {
 }
 
 variable "ec2_ami" {
-  default = ""
+  default = "ami-047a51fa27710816e"
 }
 variable "key" {
-  default = ""
+  default = "New_Key"
 }
 variable "http_port" {
-  default = ""
+  default = 80
 }
 variable "availability_zone_B" {
-  default = ""
+  default = "us-east-1b"
 }
 variable "availability_zone_A" {
-  default = ""
+  default = "us-east-1a"
 }
