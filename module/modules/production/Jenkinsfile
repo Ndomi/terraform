@@ -6,10 +6,8 @@ pipeline {
     stages {
         stage('Initialize production'){
             steps {
-                dir("production"){
-                    sh "terraform init"
+//                     sh "terraform init"
                     sh "terraform apply --auto-approve"
-                }
             }
         }
     }
