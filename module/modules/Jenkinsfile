@@ -4,16 +4,41 @@ pipeline {
       PATH = "${PATH}:${getTerraformPath()}"
     }
     stages {
-        stage('Initialize Compute'){
-            steps {
-                dir("Compute"){
-                    sh "terraform init"
+        stage ('Initializing') {
+            parallel {
+                stage('Initialize Compute'){
+                    steps {
+                        dir("Compute"){
+                            sh "terraform init"
+                        }
+                    }
+                }
+                stage('Initialize Logging'){
+                    steps {
+                        dir("Logging"){
+                            sh "terraform init"
+                        }
+                    }
+                }
+                stage('Initialize networking'){
+                    steps {
+                        dir("networking"){
+                            sh "terraform init"
+                        }
+                    }
+                }
+                stage('Initialize User'){
+                    steps {
+                        dir("User"){
+                            sh "terraform init"
+                        }
+                    }
                 }
             }
         }
-        stage('Initialize Logging'){
+        stage('Initialize production'){
             steps {
-                dir("Logging"){
+                dir("production"){
                     sh "terraform init"
                 }
             }
