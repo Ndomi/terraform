@@ -4,12 +4,19 @@ pipeline {
       PATH = "${PATH}:${getTerraformPath()}"
     }
     stages {
-        stage('terraform init'){
-                steps {
-                    dir("Compute"){
-                        sh "terraform init"
-                    }
+        stage('Initialize Compute'){
+            steps {
+                dir("Compute"){
+                    sh "terraform init"
                 }
+            }
+        }
+        stage('Initialize Logging'){
+            steps {
+                dir("Logging"){
+                    sh "terraform init"
+                }
+            }
         }
     }
 }
