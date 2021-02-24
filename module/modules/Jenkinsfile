@@ -6,7 +6,21 @@ pipeline {
     stages {
         stage('terraform init'){
                 steps {
+                    cd "Computer"
                     sh "terraform init"
+                    sleep 30
+                    cd "../Logging"
+                    sh "terraform init"
+                    sleep 30
+                    cd "../networking"
+                    sh "terraform init"
+                    sleep 30
+                    cd "../Users"
+                    sh "terraform init"
+                    sleep 30
+                    cd "../production"
+                    sh "terraform init"
+                    sleep 30
                 }
         }
     }
