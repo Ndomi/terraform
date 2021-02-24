@@ -1,8 +1,8 @@
 pipeline {
     agent any
-/*     environment {
+    environment {
       PATH = "${PATH}:${getTerraformPath()}"
-    } */
+    }
     stages {
         stage('Initialize production'){
             steps {
