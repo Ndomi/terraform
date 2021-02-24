@@ -29,7 +29,7 @@ pipeline {
                 }
                 stage('Initialize User'){
                     steps {
-                        dir("User"){
+                        dir("Users"){
                             sh "terraform init"
                         }
                     }
