@@ -43,6 +43,13 @@ pipeline {
                 }
             }
         }
+        stage('Apply in production'){
+            steps {
+                dir("production"){
+                    sh "terraform apply --auto-approve"
+                }
+            }
+        }
     }
 }
 
