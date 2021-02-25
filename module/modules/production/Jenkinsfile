@@ -28,6 +28,30 @@ node {
             sh '/usr/local/bin/terraform init -input=false'
         }
     }
+    stage('Logging preparation'){
+        dir('/var/lib/jenkins/workspace/terraform/module/modules/Logging'){
+            script {
+                currentBuild.displayName = params.version
+            }
+            sh '/usr/local/bin/terraform init -input=false'
+        }
+    }
+    stage('networking preparation'){
+        dir('/var/lib/jenkins/workspace/terraform/module/modules/networking'){
+            script {
+                currentBuild.displayName = params.version
+            }
+            sh '/usr/local/bin/terraform init -input=false'
+        }
+    }
+    stage('Users preparation'){
+        dir('/var/lib/jenkins/workspace/terraform/module/modules/Users'){
+            script {
+                currentBuild.displayName = params.version
+            }
+            sh '/usr/local/bin/terraform init -input=false'
+        }
+    }
     stage('Plan'){
         dir('/var/lib/jenkins/workspace/terraform/module/modules/production'){
             script {
