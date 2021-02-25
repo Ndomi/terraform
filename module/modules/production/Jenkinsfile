@@ -14,18 +14,23 @@ pipeline {
         TF_IN_AUTOMATION      = '1'
     }
 
+    def commit_id
+
     stages {
+        stage('Preparation') {
+            checkout scm
+            sh 'gti rev-parse --short HEAD > .git/commit-id'
+            commit_id = readFile('.git/commit-id').trim()
+        }
         stage('Plan'){
             steps {
                 script {
                     currentBuild.displayName = params.version
                 }
-                dir("production"){
-                    sh 'terraform init -input=false'
-                    sh 'terraform workspace select ${environment}'
-                    sh "terraform plan -input=false -out tfplan"
-                    sh 'terraform show -no-color tfplan > tfplan.txt'
-                }
+                sh 'terraform init -input=false'
+                sh 'terraform workspace select ${environment}'
+                sh "terraform plan -input=false -out tfplan"
+                sh 'terraform show -no-color tfplan > tfplan.txt'
             }
         }
 
@@ -46,9 +51,7 @@ pipeline {
 
         stage ('Apply') {
             steps {
-                dir("production"){
-                    sh "terraform apply -input=false tfplan"
-                }
+                sh "terraform apply -input=false tfplan"
             }
         }
     }
