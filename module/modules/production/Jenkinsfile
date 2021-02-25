@@ -21,15 +21,13 @@ node {
             commit_id = readFile('.git/commit-id').trim()
     }
     stage('Plan'){
-        steps {
-            script {
-                currentBuild.displayName = params.version
-            }
-            sh 'terraform init -input=false'
-            sh 'terraform workspace select ${environment}'
-            sh "terraform plan -input=false -out tfplan"
-            sh 'terraform show -no-color tfplan > tfplan.txt'
+        script {
+            currentBuild.displayName = params.version
         }
+        sh 'terraform init -input=false'
+        sh 'terraform workspace select ${environment}'
+        sh "terraform plan -input=false -out tfplan"
+        sh 'terraform show -no-color tfplan > tfplan.txt'
     }
 
     stage('Approval') {
@@ -38,19 +36,15 @@ node {
                 equals expected: true, actual: params.autoApprove
             }
         }
-        steps {
-            script {
-                def plan = readFile 'tfplan.txt'
-                input message: "Do you want to apply the plan?"
-                parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
-            }
+        script {
+            def plan = readFile 'tfplan.txt'
+            input message: "Do you want to apply the plan?"
+            parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
         }
     }
 
     stage ('Apply') {
-        steps {
-            sh "terraform apply -input=false tfplan"
-        }
+        sh "terraform apply -input=false tfplan"
     }
 }
 
