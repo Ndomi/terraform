@@ -22,10 +22,11 @@ node {
     }
     stage('Compute preparation'){
         dir('/var/lib/jenkins/workspace/terraform/module/modules/Compute'){
-        script {
-            currentBuild.displayName = params.version
+            script {
+                currentBuild.displayName = params.version
+            }
+            sh '/usr/local/bin/terraform init -input=false'
         }
-        sh '/usr/local/bin/terraform init -input=false'
     }
     stage('Plan'){
         dir('/var/lib/jenkins/workspace/terraform/module/modules/production'){
