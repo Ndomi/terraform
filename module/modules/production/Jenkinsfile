@@ -78,7 +78,9 @@ node {
     }
 
     stage ('Apply') {
-        sh "/usr/local/bin/terraform apply -input=false tfplan"
+        withAWS(credentials: 'aws') {
+            sh "/usr/local/bin/terraform apply -input=false tfplan"
+        }
     }
 }
 
