@@ -1,4 +1,6 @@
-node {
+pipeline {
+    agent any
+
     parameters {
         string(name: 'environment', defaultValue: 'default', description: 'Workspace/environment file to use for deployment')
         string(name: 'version', defaultValue: '', description: 'Version variable to pass to Terraform')
@@ -14,80 +16,93 @@ node {
     }
 
 
-    def commit_id
-    stage('Preparation') {
-        checkout scm
-        sh 'git rev-parse --short HEAD > .git/commit-id'
-            commit_id = readFile('.git/commit-id').trim()
-    }
-    stage('Compute preparation'){
-        dir('/var/lib/jenkins/workspace/terraform/module/modules/Compute'){
-            script {
-                currentBuild.displayName = params.version
+    stages {
+        stage('Compute preparation'){
+            steps {
+                dir('/var/lib/jenkins/workspace/terraform/module/modules/Compute'){
+                    script {
+                        currentBuild.displayName = params.version
+                    }
+                    sh '/usr/local/bin/terraform init -input=false'
+                }
             }
-            sh '/usr/local/bin/terraform init -input=false'
         }
-    }
-    stage('Logging preparation'){
-        dir('/var/lib/jenkins/workspace/terraform/module/modules/Logging'){
-            script {
-                currentBuild.displayName = params.version
-            }
-            sh '/usr/local/bin/terraform init -input=false'
-        }
-    }
-    stage('networking preparation'){
-        dir('/var/lib/jenkins/workspace/terraform/module/modules/networking'){
-            script {
-                currentBuild.displayName = params.version
-            }
-            sh '/usr/local/bin/terraform init -input=false'
-        }
-    }
-    stage('Users preparation'){
-        dir('/var/lib/jenkins/workspace/terraform/module/modules/Users'){
-            script {
-                currentBuild.displayName = params.version
-            }
-            sh '/usr/local/bin/terraform init -input=false'
-        }
-    }
-    stage('Plan'){
-        dir('/var/lib/jenkins/workspace/terraform/module/modules/production'){
-            script {
-                currentBuild.displayName = params.version
-            }
-            sh '/usr/local/bin/terraform init -input=false'
-            sh '/usr/local/bin/terraform workspace select ${environment}'
-            sh "/usr/local/bin/terraform plan -input=false -out tfplan"
-            sh '/usr/local/bin/terraform show -no-color tfplan > tfplan.txt'
-        }
-    }
 
-/*     stage('Approval') {
-        when {
-            not {
-                equals expected: true, actual: params.autoApprove
+        stage('Logging preparation'){
+            steps {
+                dir('/var/lib/jenkins/workspace/terraform/module/modules/Logging'){
+                    script {
+                        currentBuild.displayName = params.version
+                    }
+                    sh '/usr/local/bin/terraform init -input=false'
+                }
             }
         }
-        script {
-            def plan = readFile 'tfplan.txt'
-            input message: "Do you want to apply the plan?"
-            parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
-        }
-    } */
 
-    stage ('Apply') {
-        dir('/var/lib/jenkins/workspace/terraform/module/modules/production'){
-            sh "/usr/local/bin/terraform apply -input=false tfplan"
+        stage('networking preparation'){
+            steps {
+                dir('/var/lib/jenkins/workspace/terraform/module/modules/networking'){
+                    script {
+                        currentBuild.displayName = params.version
+                    }
+                    sh '/usr/local/bin/terraform init -input=false'
+            }
+        }
+
+        stage('Users preparation'){
+            steps {
+                dir('/var/lib/jenkins/workspace/terraform/module/modules/Users'){
+                    script {
+                        currentBuild.displayName = params.version
+                    }
+                    sh '/usr/local/bin/terraform init -input=false'
+                }
+            }
+        }
+
+        stage('Plan'){
+            steps {
+                dir('/var/lib/jenkins/workspace/terraform/module/modules/production'){
+                    script {
+                        currentBuild.displayName = params.version
+                    }
+                    sh '/usr/local/bin/terraform init -input=false'
+                    sh '/usr/local/bin/terraform workspace select ${environment}'
+                    sh "/usr/local/bin/terraform plan -input=false -out tfplan"
+                    sh '/usr/local/bin/terraform show -no-color tfplan > tfplan.txt'
+                }
+            }
+        }
+        stage('Approval') {
+            when {
+                not {
+                    equals expected: true, actual: params.autoApprove
+                }
+            }
+
+            steps {
+                script {
+                    def plan = readFile 'tfplan.txt'
+                    input message: "Do you want to apply the plan?"
+                    parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
+                }
+            }
+        }
+
+        stage ('Apply') {
+            steps {
+                dir('/var/lib/jenkins/workspace/terraform/module/modules/production'){
+                    sh "/usr/local/bin/terraform apply -input=false tfplan"
+                }
+            }
+        }
+
+        post {
+            always {
+                archiveArtifacts artifacts: 'tfplan.txt'
+            }
         }
     }
-}
-
-    post {
-        always {
-            archiveArtifacts artifacts: 'tfplan.txt'
-        }
 }
 
 def getTerraformPath(){
