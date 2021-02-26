@@ -8,7 +8,7 @@ pipeline {
     }
 
     environment {
-        /* PATH = "${PATH}:${getTerraformPath()}" */
+        PATH = "${PATH}:${getTerraformPath()}"
 
         AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
@@ -46,6 +46,7 @@ pipeline {
                         currentBuild.displayName = params.version
                     }
                     sh '/usr/local/bin/terraform init -input=false'
+                }
             }
         }
 
@@ -105,8 +106,7 @@ pipeline {
     }
 }
 
-/*
 def getTerraformPath(){
     def tfHome = tool name: 'terraform-12', type: 'terraform'
     return tfHome
-} */
+}
