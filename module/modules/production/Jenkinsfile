@@ -59,12 +59,12 @@ node {
             }
             sh '/usr/local/bin/terraform init -input=false'
             sh '/usr/local/bin/terraform workspace select ${environment}'
-            sh "/usr/local/bin/terraform plan -input=false -out tfplan"
+            sh "/usr/local/bin/terraform plan"
             sh '/usr/local/bin/terraform show -no-color tfplan > tfplan.txt'
         }
     }
 
-    stage('Approval') {
+/*     stage('Approval') {
         when {
             not {
                 equals expected: true, actual: params.autoApprove
@@ -75,10 +75,12 @@ node {
             input message: "Do you want to apply the plan?"
             parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
         }
-    }
+    } */
 
     stage ('Apply') {
-        sh "/usr/local/bin/terraform apply -input=false tfplan"
+        dir('/var/lib/jenkins/workspace/terraform/module/modules/production'){
+            sh "/usr/local/bin/terraform apply -input=false tfplan"
+        }
     }
 }
 
