@@ -74,8 +74,26 @@ pipeline {
                 }
             }
         }
+        stage('Approval') {
+/*             when {
+                not {
+                    equals expected: true, actual: params.autoApprove
+                }
+            }
 
-        stage ('Destroy') {
+            steps {
+                script {
+                    def plan = readFile 'tfplan.txt'
+                    input message: "Do you want to apply the plan?"
+                    parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
+                }
+            } */
+            steps {
+                input('Do you want to apply the plan ??')
+            }
+        }
+
+        stage ('Apply') {
             steps {
                 dir('/var/lib/jenkins/workspace/terraform/module/modules/production'){
                     sh "/usr/local/bin/terraform destroy -input=false tfplan"
