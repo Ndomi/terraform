@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent none
 
     parameters {
         string(name: 'environment', defaultValue: 'default', description: 'Workspace/environment file to use for deployment')
@@ -99,11 +99,11 @@ pipeline {
         }
     }
 
-    post {
+/*     post {
         always {
             archiveArtifacts artifacts: 'tfplan.txt'
         }
-    }
+    } */
 }
 
 def getTerraformPath(){
