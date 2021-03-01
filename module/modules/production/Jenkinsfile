@@ -4,7 +4,7 @@ pipeline {
     parameters {
         string(name: 'environment', defaultValue: 'default', description: 'Workspace/environment file to use for deployment')
         string(name: 'version', defaultValue: '', description: 'Version variable to pass to Terraform')
-        booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
+//         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
     }
 
     environment {
@@ -75,7 +75,7 @@ pipeline {
             }
         }
         stage('Approval') {
-            when {
+/*             when {
                 not {
                     equals expected: true, actual: params.autoApprove
                 }
@@ -87,6 +87,9 @@ pipeline {
                     input message: "Do you want to apply the plan?"
                     parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
                 }
+            } */
+            steps {
+                input('Do you want to apply the plan ??')
             }
         }
 
