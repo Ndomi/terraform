@@ -93,7 +93,7 @@ pipeline {
             }
         }
 
-        stage ('Apply') {
+        stage ('Destroy') {
             steps {
                 dir('/var/lib/jenkins/workspace/terraform/module/modules/production'){
                     sh "/usr/local/bin/terraform destroy --auto-approve"
