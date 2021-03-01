@@ -101,12 +101,22 @@ pipeline {
             }
         }
     }
-
-/*     post {
-        always {
-            archiveArtifacts artifacts: 'tfplan.txt'
+    post {
+        fixed {
+            script {
+                if (env.BRANCH_NAME == 'main') {
+                    slackSend(color: '#00FF00', message: "BACK TO GREEN: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                }
+            }
         }
-    } */
+        failure {
+            script {
+                if (env.BRANCH_NAME == 'main') {
+                    slackSend(color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                }
+            }
+        }
+    }
 }
 
 def getTerraformPath(){
