@@ -1,5 +1,5 @@
 module "networking" {
-  source = "git::https://github.com/Ndomi/terraform.git//module/modules/networking?ref=v0.1.45"
+  source = "git::https://github.com/Ndomi/terraform.git//module/modules/networking?ref=v0.1.46"
 }
 
 resource "aws_instance" "Jumpbox_A" {
@@ -17,17 +17,12 @@ resource "aws_instance" "Jumpbox_A" {
   depends_on = [module.networking.vpc_id, module.networking.publicSN_A]
 }
 
-resource "aws_key_pair" "my_public_keys" {
-  key_name = "ndomi"
-  public_key = file("${path.module}/public_keys/ndomi.pub")
-}
-
 resource "aws_instance" "Jumpbox_B" {
   ami                    = var.ec2_ami
   instance_type          = lookup(var.ec2_instance_type,terraform.workspace)
   vpc_security_group_ids = [module.networking.publicSG_B]
   subnet_id              = module.networking.publicSN_A
-  key_name               = var.key
+  key_name               = aws_key_pair.my_public_keys.key_name
 
   tags = {
     Name = "Public EC2 B ${terraform.workspace}"
@@ -35,6 +30,11 @@ resource "aws_instance" "Jumpbox_B" {
 
   depends_on = [module.networking.vpc_id, module.networking.publicSN_B]
 
+}
+
+resource "aws_key_pair" "my_public_keys" {
+  key_name = "ndomi"
+  public_key = file("${path.module}/public_keys/ndomi.pub")
 }
 
 resource "aws_instance" "Webapp_server_A" {
