@@ -17,6 +17,11 @@ pipeline {
 
 
     stages {
+        stage('S3 - Create bucket'){
+            steps{
+                sh 'ansible-playbook s3-bucket.yml'
+            }
+        }
         stage('Compute preparation'){
             steps {
                 dir('/var/lib/jenkins/workspace/terraform/module/modules/Compute'){
