@@ -61,13 +61,24 @@ pipeline {
             }
         }
 
-        stage('Plan'){
+        stage('production preparation'){
             steps {
                 dir('/var/lib/jenkins/workspace/terraform/module/modules/production'){
                     script {
                         currentBuild.displayName = params.version
                     }
                     sh '/usr/local/bin/terraform init -input=false'
+                }
+            }
+        }
+
+        stage('Plan'){
+            steps {
+                dir('/var/lib/jenkins/workspace/terraform/module/modules/production'){
+                    script {
+                        currentBuild.displayName = params.version
+                    }
+//                    sh '/usr/local/bin/terraform init -input=false'
                     sh '/usr/local/bin/terraform workspace select ${environment}'
                     sh "/usr/local/bin/terraform plan -input=false -out tfplan"
                     sh '/usr/local/bin/terraform show -no-color tfplan > tfplan.txt'

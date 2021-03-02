@@ -1,5 +1,5 @@
 module "networking" {
-  source = "git::https://github.com/Ndomi/terraform.git//module/modules/networking?ref=v0.1.42"
+  source = "git::https://github.com/Ndomi/terraform.git//module/modules/networking?ref=v0.1.43"
 }
 
 resource "aws_instance" "Jumpbox_A" {
