@@ -11,9 +11,9 @@ variable "ec2_ami" {
   default = "ami-047a51fa27710816e"
 }
 
-/*variable "key" {
+variable "key" {
   default = "New_Key"
-}*/
+}
 
 variable "http_port" {
   default = 80
