@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'environment', defaultValue: 'default', description: 'Workspace/environment file to use for deployment')
-        string(name: 'version', defaultValue: '', description: 'Version variable to pass to Terraform')
+//         string(name: 'environment', defaultValue: 'default', description: 'Workspace/environment file to use for deployment')
+//         string(name: 'version', defaultValue: '', description: 'Version variable to pass to Terraform')
 //         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
     }
 
@@ -20,9 +20,9 @@ pipeline {
         stage('Compute preparation'){
             steps {
                 dir('/var/lib/jenkins/workspace/terraform/module/modules/Compute'){
-                    script {
+/*                     script {
                         currentBuild.displayName = params.version
-                    }
+                    } */
                     sh '/usr/local/bin/terraform init -input=false'
                 }
             }
@@ -31,9 +31,9 @@ pipeline {
         stage('Logging preparation'){
             steps {
                 dir('/var/lib/jenkins/workspace/terraform/module/modules/Logging'){
-                    script {
+/*                     script {
                         currentBuild.displayName = params.version
-                    }
+                    } */
                     sh '/usr/local/bin/terraform init -input=false'
                 }
             }
@@ -42,9 +42,9 @@ pipeline {
         stage('networking preparation'){
             steps {
                 dir('/var/lib/jenkins/workspace/terraform/module/modules/networking'){
-                    script {
+/*                     script {
                         currentBuild.displayName = params.version
-                    }
+                    } */
                     sh '/usr/local/bin/terraform init -input=false'
                 }
             }
@@ -53,9 +53,9 @@ pipeline {
         stage('Users preparation'){
             steps {
                 dir('/var/lib/jenkins/workspace/terraform/module/modules/Users'){
-                    script {
+/*                     script {
                         currentBuild.displayName = params.version
-                    }
+                    } */
                     sh '/usr/local/bin/terraform init -input=false'
                 }
             }
@@ -64,9 +64,9 @@ pipeline {
         stage('production preparation'){
             steps {
                 dir('/var/lib/jenkins/workspace/terraform/module/modules/production'){
-                    script {
+/*                     script {
                         currentBuild.displayName = params.version
-                    }
+                    } */
                     sh '/usr/local/bin/terraform init -input=false'
                 }
             }
@@ -75,9 +75,9 @@ pipeline {
         stage('Plan'){
             steps {
                 dir('/var/lib/jenkins/workspace/terraform/module/modules/production'){
-                    script {
+/*                     script {
                         currentBuild.displayName = params.version
-                    }
+                    } */
 //                    sh '/usr/local/bin/terraform init -input=false'
                     sh '/usr/local/bin/terraform workspace select ${environment}'
                     sh "/usr/local/bin/terraform plan -input=false -out tfplan"
