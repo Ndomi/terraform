@@ -1,5 +1,5 @@
 module "networking" {
-  source = "git::https://github.com/Ndomi/terraform.git//module/modules/networking?ref=v0.1.40"
+  source = "git::https://github.com/Ndomi/terraform.git//module/modules/networking?ref=v0.1.42"
 }
 
 resource "aws_instance" "Jumpbox_A" {
@@ -8,7 +8,7 @@ resource "aws_instance" "Jumpbox_A" {
   instance_type          = lookup(var.ec2_instance_type,terraform.workspace)
   vpc_security_group_ids = [module.networking.publicSG_A]
   subnet_id              = module.networking.publicSN_A
-//  key_name               = var.key
+  key_name               = aws_key_pair.my_public_keys.key_name
 
   tags = {
     Name = "Public EC2 A ${terraform.workspace}"
@@ -17,9 +17,9 @@ resource "aws_instance" "Jumpbox_A" {
   depends_on = [module.networking.vpc_id, module.networking.publicSN_A]
 }
 
-resource "aws_key_pair" "Jumpbox_A" {
+resource "aws_key_pair" "my_public_keys" {
   key_name = "ndomi"
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC78/zLLdvuXtt3hUEVdN5H7cTxGGYTXqAB3KCgU6aeTZl81VXrkYhRFerbvn9JwcTPrdhBIv99sgyfNH/oy57GCM/Ep+fRA4gvxqihsgeH/X51KIoFhzZ4vDIkFG2XviJ0WUox4T7JZMY5Z5QPBGr2RyZcGQY/NCa5drZZm1d7EkYljrgDE11XdjHQHOnbKpXfxXkrdZmGYFyS2kCAq+JS5AJG+/VODRjvWha7MgpTnAcrKcRjgUIxYmfR4N4oXnNqgroIAAWgSM9tpLaobVlo4IvrWB4hJPcZXNfk3cM4PSndPD1xi26Ea1iunMFoYwNKQk36VCQMvMm7vQlqbeoiq2lA1YVC7tC4mk0lVHKtDNR8FyIWbJ0iSOM7ZZ22Kgl38nsYEXYHevJ734A5SRC66ZHY0fNs3vx5pGYlIHQmelrSINqVSX9FI6Jq3lyfi1taxySZbwasudmA+vCJGpUETbyq6CrLhO9p4NSkfX9uHwssopK/92A5gPiCzZso0o0= ndomi@terminator"
+  public_key = file("${path.module}/public_keys/ndomi.pub")
 }
 
 resource "aws_instance" "Jumpbox_B" {
