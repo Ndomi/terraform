@@ -19,12 +19,12 @@ node {
         checkout scm
     }
     stage('S3 - Create bucket'){
-        dir('/var/lib/jenkins/workspace/terraform/module/modules/production'){
+        dir('/var/lib/jenkins/workspace/Production/module/modules/production'){
             sh '/bin/ansible-playbook s3-bucket.yml'
         }
     }
     stage('Compute preparation'){
-        dir('/var/lib/jenkins/workspace/terraform/module/modules/Compute'){
+        dir('/var/lib/jenkins/workspace/Production/module/modules/Compute'){
             script {
                 currentBuild.displayName = params.version
             }
@@ -33,7 +33,7 @@ node {
     }
 
     stage('Logging preparation'){
-        dir('/var/lib/jenkins/workspace/terraform/module/modules/Logging'){
+        dir('/var/lib/jenkins/workspace/Production/module/modules/Logging'){
             script {
                 currentBuild.displayName = params.version
             }
@@ -42,7 +42,7 @@ node {
     }
 
     stage('networking preparation'){
-        dir('/var/lib/jenkins/workspace/terraform/module/modules/networking'){
+        dir('/var/lib/jenkins/workspace/Production/module/modules/networking'){
             script {
                 currentBuild.displayName = params.version
             }
@@ -51,7 +51,7 @@ node {
     }
 
     stage('Users preparation'){
-        dir('/var/lib/jenkins/workspace/terraform/module/modules/Users'){
+        dir('/var/lib/jenkins/workspace/Production/module/modules/Users'){
             script {
                 currentBuild.displayName = params.version
             }
@@ -60,7 +60,7 @@ node {
     }
 
     stage('production preparation'){
-        dir('/var/lib/jenkins/workspace/terraform/module/modules/production'){
+        dir('/var/lib/jenkins/workspace/Production/module/modules/production'){
             script {
                 currentBuild.displayName = params.version
             }
@@ -69,7 +69,7 @@ node {
     }
 
     stage('Plan'){
-        dir('/var/lib/jenkins/workspace/terraform/module/modules/production'){
+        dir('/var/lib/jenkins/workspace/Production/module/modules/production'){
             script {
                 currentBuild.displayName = params.version
             }
@@ -97,7 +97,7 @@ node {
     }
 
     stage ('Apply') {
-        dir('/var/lib/jenkins/workspace/terraform/module/modules/production'){
+        dir('/var/lib/jenkins/workspace/Production/module/modules/production'){
             sh "/usr/local/bin/terraform apply -input=false tfplan"
         }
     }
