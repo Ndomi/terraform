@@ -17,8 +17,8 @@ pipeline {
 
 
     stages {
-        checkout scm
         stage('S3 - Create bucket'){
+            checkout scm
             steps{
                 dir('/var/lib/jenkins/workspace/terraform/module/modules/production'){
                     sh '/bin/ansible-playbook s3-bucket.yml'
