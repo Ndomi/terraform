@@ -14,9 +14,10 @@ node {
         TF_IN_AUTOMATION      = '1' */
     }
 
-
-    stage('S3 - Create bucket'){
+    stage('Preparation'){
         checkout scm
+    }
+    stage('S3 - Create bucket'){
         dir('/var/lib/jenkins/workspace/terraform/module/modules/production'){
             sh '/bin/ansible-playbook s3-bucket.yml'
         }
