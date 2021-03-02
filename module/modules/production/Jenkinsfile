@@ -17,6 +17,7 @@ pipeline {
 
 
     stages {
+        checkout scm
         stage('S3 - Create bucket'){
             steps{
                 dir('/var/lib/jenkins/workspace/terraform/module/modules/production'){
