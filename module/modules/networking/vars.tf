@@ -31,7 +31,7 @@ variable "ssh_port" {
 }
 
 variable "my_ip_address" {
-  default = "102.222.182.45/32"
+  default = "xxx.xxx.xxx.xxx/32"
 }
 
 variable "availability_zone_A" {
