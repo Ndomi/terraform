@@ -14,10 +14,7 @@ variable "guardduty_assets" {
   default = "guardduty"
 }
 
-variable "aws_account_id" {
-  type    = number
-  default = 370372383215
-}
+variable "aws_account_id" {}
 
 variable "group_name" {
   default = "guardduty-admin"

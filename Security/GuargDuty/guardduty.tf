@@ -118,27 +118,34 @@ resource "aws_guardduty_ipset" "MyDetector" {
   detector_id = aws_guardduty_detector.guardduty.id
   format      = "TXT"
   location    = "s3://${aws_s3_bucket_object.ip_list.bucket}/${aws_s3_bucket_object.ip_list.key}"
-  name        = "example_ipset"
-  depends_on = [aws_s3_bucket.security]
+  name        = "MyIPSet"
 }
 
 resource "aws_guardduty_detector" "guardduty" {
   enable = true
 }
 
-/*resource "aws_s3_bucket_object" "ip_list" {
-  acl          = "public-read"
-  bucket       = aws_s3_bucket.security.id
-  key          = "${var.guardduty_assets}/iplist.txt"
-  source       = "${path.module}/iplist.txt"
-  content_type = "text/plain"
-  etag         = md5(file("${path.module}/iplist.txt"))
-}*/
-
 resource "aws_s3_bucket_object" "ip_list" {
   acl     = "public-read"
-  content = file("${path.module}/iplist.txt")
-  #content = "10.0.0.0/8\n"
+//  content = file("${path.module}/iplist.txt")
+  content = "10.0.0.0/8\n"
   bucket  = aws_s3_bucket.security.id
   key     = "MyIPSet"
+}
+
+resource "aws_guardduty_threatintelset" "MyDetector2" {
+  activate = true
+  detector_id = aws_guardduty_detector.guardduty.id
+  format = "TXT"
+  location = "s3://${aws_s3_bucket_object.ip_list2.bucket}/${aws_s3_bucket_object.ip_list2.key}"
+  name = "example_ipset_threat"
+  depends_on = [aws_s3_bucket.security]
+}
+
+resource "aws_s3_bucket_object" "ip_list2" {
+  acl     = "public-read"
+//  content = file("${path.module}/iplist2.txt")
+  content = "111.22.33.44/8\n"
+  bucket  = aws_s3_bucket.security.id
+  key     = "MyIPSet_thread"
 }
