@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="awscliv2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Security/awscliv2.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
