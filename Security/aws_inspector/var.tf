@@ -11,15 +11,6 @@ variable "aws_ami" {
   }
 }
 
-variable "aws_keys" {
-  type = map
-  default = {
-    "us-east-1" = "ssh_keys"
-    "us-east-2" = "test_keys"
-    "us-west-1" = "test2_keys"
-  }
-}
-
 variable "aws_region" {
   default = "us-east-1"
 }
