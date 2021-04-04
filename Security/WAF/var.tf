@@ -15,7 +15,7 @@ variable "ssh_port" {
 }
 
 variable "my_ip_address" {
-  default = "xxx.xxx.xxx.xxx/32"
+  default = "23.82.14.114/32"
 }
 
 variable "public_subnet_cidr_A" {
