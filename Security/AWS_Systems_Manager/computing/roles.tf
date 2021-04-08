@@ -1,3 +1,7 @@
+module "cloudwatch" {
+  source = "../CloudWatch_Log"
+}
+
 resource "aws_iam_role" "test_role" {
   name = "ssm-ec2"
   assume_role_policy = <<EOF
@@ -36,4 +40,10 @@ resource "aws_iam_policy_attachment" "attach2" {
   name = "attach2"
   roles = [aws_iam_role.test_role.id]
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM"
+}
+
+resource "aws_iam_policy_attachment" "attach3" {
+  name = "attach3"
+  policy_arn = module.cloudwatch.cloudwatch_log
+  roles = [aws_iam_role.test_role.id]
 }
