@@ -18,3 +18,7 @@ module "main_account_events" {
   source = "./CloudWatch_Events"
   create = true
 }
+
+module "cloudtrail" {
+  source = "./cloudTrail"
+}
