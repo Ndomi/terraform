@@ -1,11 +1,11 @@
 resource "aws_cloudtrail" "trail_test" {
-  name = "trail_test"
-  s3_bucket_name = aws_s3_bucket.master-cloudtrail-bucket.id
-  s3_key_prefix = "cloudtrail"
+  name                          = "trail_test"
+  s3_bucket_name                = aws_s3_bucket.master-cloudtrail-bucket.id
+  s3_key_prefix                 = "cloudtrail"
   include_global_service_events = true
-  enable_log_file_validation = true
-  enable_logging = true
-  is_multi_region_trail = true
+  enable_log_file_validation    = true
+  enable_logging                = true
+  is_multi_region_trail         = true
 
   tags = {
     Name = "Master Cloudtrail"

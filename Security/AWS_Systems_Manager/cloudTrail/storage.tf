@@ -1,6 +1,6 @@
 resource "aws_s3_bucket" "cloudtrail-access-log-bucket" {
-  bucket = "${var.cloudtrail-access-log-bucket}-${var.env}"
-  acl = "log-delivery-write"
+  bucket        = "${var.cloudtrail-access-log-bucket}-${var.env}"
+  acl           = "log-delivery-write"
   force_destroy = true
 
   tags = {
@@ -9,7 +9,7 @@ resource "aws_s3_bucket" "cloudtrail-access-log-bucket" {
 }
 
 resource "aws_s3_bucket" "master-cloudtrail-bucket" {
-  bucket = "${var.cloudtrail-s3-bucket}-${var.env}"
+  bucket        = "${var.cloudtrail-s3-bucket}-${var.env}"
   force_destroy = true
 
   versioning {

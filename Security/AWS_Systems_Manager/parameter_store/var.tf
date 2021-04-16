@@ -7,7 +7,7 @@ variable "db_instance" {
 }
 
 variable "allocation" {
-  type = number
+  type    = number
   default = 10
 }
 

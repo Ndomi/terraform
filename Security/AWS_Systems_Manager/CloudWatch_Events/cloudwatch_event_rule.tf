@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_event_rule" "event-rule" {
-  name = "capture-stopped-instances"
+  name        = "capture-stopped-instances"
   description = "Capture a Stopped Instance"
 
   event_pattern = <<EOF

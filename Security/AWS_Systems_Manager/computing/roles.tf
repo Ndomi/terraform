@@ -3,7 +3,7 @@ module "cloudwatch" {
 }
 
 resource "aws_iam_role" "test_role" {
-  name = "ssm-ec2"
+  name               = "ssm-ec2"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -31,19 +31,19 @@ resource "aws_iam_instance_profile" "profile" {
 }
 
 resource "aws_iam_policy_attachment" "attach1" {
-  name = "attach1"
-  roles = [aws_iam_role.test_role.id]
+  name       = "attach1"
+  roles      = [aws_iam_role.test_role.id]
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
 resource "aws_iam_policy_attachment" "attach2" {
-  name = "attach2"
-  roles = [aws_iam_role.test_role.id]
+  name       = "attach2"
+  roles      = [aws_iam_role.test_role.id]
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM"
 }
 
 resource "aws_iam_policy_attachment" "attach3" {
-  name = "attach3"
+  name       = "attach3"
   policy_arn = module.cloudwatch.cloudwatch_log
-  roles = [aws_iam_role.test_role.id]
+  roles      = [aws_iam_role.test_role.id]
 }
