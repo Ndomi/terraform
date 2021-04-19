@@ -22,3 +22,7 @@ module "main_account_events" {
 module "cloudtrail" {
   source = "./cloudTrail"
 }
+
+module "s3_evewnt_notification" {
+  source = "./s3_event_notification"
+}
