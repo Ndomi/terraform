@@ -18,3 +18,12 @@ resource "aws_route_table_association" "public_A_RT_ass" {
   subnet_id      = aws_subnet.public_subnet_A.id
   depends_on     = [aws_subnet.public_subnet_A, aws_route_table.internet]
 }
+
+#################################
+resource "aws_route_table" "Private_RT_B" {
+  vpc_id = aws_vpc.secondary_vpc.id
+
+  route {
+    cidr_block = ""
+  }
+}
