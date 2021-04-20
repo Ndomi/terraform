@@ -4,16 +4,16 @@ resource "aws_security_group" "public_SG_A" {
   description = "Public SG A"
 
   ingress {
-    from_port = var.ssh_port
-    protocol = "tcp"
-    to_port = var.ssh_port
+    from_port   = var.ssh_port
+    protocol    = "tcp"
+    to_port     = var.ssh_port
     cidr_blocks = [var.my_ip_address]
   }
 
   egress {
-    from_port = 0
-    protocol = "-1"
-    to_port = 0
+    from_port   = 0
+    protocol    = "-1"
+    to_port     = 0
     cidr_blocks = [var.internet_ip]
   }
 
@@ -23,22 +23,22 @@ resource "aws_security_group" "public_SG_A" {
 }
 
 resource "aws_security_group" "private_SG_A" {
-  name = "Private_SG_A"
-  vpc_id = aws_vpc.main_vpc.id
+  name        = "Private_SG_A"
+  vpc_id      = aws_vpc.main_vpc.id
   description = "Private SG A"
 
   ingress {
-    from_port = var.ssh_port
-    protocol = "tcp"
-    to_port = var.ssh_port
+    from_port       = var.ssh_port
+    protocol        = "tcp"
+    to_port         = var.ssh_port
     security_groups = [aws_security_group.public_SG_A.id]
-    description = "Allow ssh from ${aws_security_group.public_SG_A.name}"
+    description     = "Allow ssh from ${aws_security_group.public_SG_A.name}"
   }
 
   egress {
-    from_port = 0
-    protocol = "-1"
-    to_port = 0
+    from_port   = 0
+    protocol    = "-1"
+    to_port     = 0
     cidr_blocks = [var.internet_ip]
   }
 
@@ -48,22 +48,22 @@ resource "aws_security_group" "private_SG_A" {
 }
 
 resource "aws_security_group" "private_SG_B" {
-  name = "Private_SG_B"
-  vpc_id = aws_vpc.secondary_vpc.id
+  name        = "Private_SG_B"
+  vpc_id      = aws_vpc.secondary_vpc.id
   description = "Private SG B"
 
   ingress {
-    from_port = var.ssh_port
-    protocol = "tcp"
-    to_port = var.ssh_port
+    from_port       = var.ssh_port
+    protocol        = "tcp"
+    to_port         = var.ssh_port
     security_groups = [aws_security_group.private_SG_A.id]
-    description = "Allow ssh from ${aws_security_group.private_SG_A.name} and ${aws_security_group.public_SG_A.name}"
+    description     = "Allow ssh from ${aws_security_group.private_SG_A.name} and ${aws_security_group.public_SG_A.name}"
   }
 
   egress {
     from_port = 0
-    protocol = "-1"
-    to_port = 0
+    protocol  = "-1"
+    to_port   = 0
   }
 
   tags = {

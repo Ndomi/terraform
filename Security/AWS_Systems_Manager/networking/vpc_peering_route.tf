@@ -2,8 +2,8 @@ data "aws_caller_identity" "current" {}
 
 resource "aws_vpc_peering_connection" "primary_secondary" {
   peer_owner_id = data.aws_caller_identity.current.account_id
-  vpc_id = aws_vpc.main_vpc.id
-  peer_vpc_id = aws_vpc.secondary_vpc.id
+  vpc_id        = aws_vpc.main_vpc.id
+  peer_vpc_id   = aws_vpc.secondary_vpc.id
 
   # Flags that the peering connection should be automatically confirmed. This
   # only works if both VPCs are owned by the same account.
