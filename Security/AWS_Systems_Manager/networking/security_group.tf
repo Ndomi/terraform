@@ -22,6 +22,31 @@ resource "aws_security_group" "public_SG_A" {
   }
 }
 
+resource "aws_security_group" "private_SG_A" {
+  name = "Private_SG_A"
+  vpc_id = aws_vpc.main_vpc.id
+  description = "Private SG A"
+
+  ingress {
+    from_port = var.ssh_port
+    protocol = "tcp"
+    to_port = var.ssh_port
+    security_groups = [aws_security_group.public_SG_A.id]
+    description = "Allow ssh from ${aws_security_group.public_SG_A.name}"
+  }
+
+  egress {
+    from_port = 0
+    protocol = "-1"
+    to_port = 0
+    cidr_blocks = [var.internet_ip]
+  }
+
+  tags = {
+    Name = "Private SG A"
+  }
+}
+
 /*resource "aws_security_group_rule" "allow_http_A" {
   from_port         = var.http_port
   protocol          = "tcp"

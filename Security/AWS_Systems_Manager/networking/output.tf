@@ -9,3 +9,11 @@ output "publicSN_A" {
 output "publicSG_A" {
   value = aws_security_group.public_SG_A.id
 }
+
+output "privateSG_A" {
+  value = aws_security_group.private_SG_A.id
+}
+
+output "privateSN_A" {
+  value = aws_subnet.private_subnet_A.id
+}

@@ -1,5 +1,9 @@
-output "ec2-instance" {
-  value = aws_instance.ec2.id
+output "bastion_ec2" {
+  value = aws_instance.bastion-ec2.id
+}
+
+output "private-ec2" {
+  value = aws_instance.private-ec2.id
 }
 
 output "ec2-instance-profile" {
