@@ -3,7 +3,7 @@ variable "internet_ip" {
 }
 
 variable "my_ip_address" {
-  default = "156.146.37.79/32"  //VPN IP Address
+  default = "102.65.85.45/32" //VPN IP Address
 }
 
 variable "public_subnet_cidr_A" {

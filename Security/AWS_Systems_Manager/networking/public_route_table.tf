@@ -20,10 +20,19 @@ resource "aws_route_table_association" "public_A_RT_ass" {
 }
 
 #################################
+/*
 resource "aws_route_table" "Private_RT_B" {
   vpc_id = aws_vpc.secondary_vpc.id
 
   route {
-    cidr_block = ""
+    cidr_block = var.internet_ip
+    gateway_id = aws_internet_gateway.IGW.id
   }
-}
+
+  tags = {
+    Name = "Public RT - Secondary VPC"
+  }
+
+  depends_on = [aws_vpc.secondary_vpc, aws_internet_gateway.IGW]
+
+}*/
