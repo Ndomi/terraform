@@ -29,7 +29,6 @@ resource "aws_vpc_endpoint" "s3_endpoint" {
 
 /*  policy = <<EOF
 {
-  "Version": "2012-10-17",
   "Statement": [
     {
       "Action": "*",
