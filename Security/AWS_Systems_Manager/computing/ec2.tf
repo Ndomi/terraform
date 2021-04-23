@@ -21,8 +21,10 @@ resource "aws_instance" "private-A-ec2" {
   instance_type   = "t2.micro"
   subnet_id       = module.networking.privateSN_A
   security_groups = [module.networking.privateSG_A]
+  iam_instance_profile = aws_iam_instance_profile.s3-endpoint-profile.name
   key_name        = aws_key_pair.ssmkey.key_name
   user_data       = file("${path.module}/install-ssm.sh")
+
 
   tags = {
     Name = "Private A EC2"
