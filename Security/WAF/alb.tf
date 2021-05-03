@@ -30,20 +30,34 @@ resource "aws_alb_target_group" "alb_front" {
   depends_on = [aws_vpc.main_vpc]
 }
 
-resource "aws_alb_target_group_attachment" "target_group_alb_a" {
-  target_group_arn = aws_alb_target_group.alb_front.arn
-  target_id = aws_instance.webserver_a.id
+resource "aws_alb_target_group" "alb_front2" {
+  name = "alb-front2"
+  vpc_id = aws_vpc.main_vpc.id
   port = var.http_port
+  protocol = "HTTP"
+  health_check {
+    path = "/"
+    healthy_threshold = 10
+    unhealthy_threshold = 5
+    interval = 10
+    timeout = 8
+    matcher = "200"
+  }
+  tags = {
+    Name = "front_http2"
+  }
 
-  depends_on = [aws_security_group.public_SG_A, aws_alb_target_group.alb_front]
+  depends_on = [aws_vpc.main_vpc]
 }
 
-resource "aws_alb_target_group_attachment" "target_group_alb_b" {
-  target_group_arn = aws_alb_target_group.alb_front.arn
-  target_id = aws_instance.webserver_b.id
-  port = var.http_port
+resource "aws_autoscaling_attachment" "asg_attachment_1" {
+  autoscaling_group_name = aws_autoscaling_group.ASG_1.id
+  alb_target_group_arn = aws_alb_target_group.alb_front.arn
+}
 
-  depends_on = [aws_security_group.public_SG_B, aws_alb_target_group.alb_front]
+resource "aws_autoscaling_attachment" "asg_attachment_2" {
+  autoscaling_group_name = aws_autoscaling_group.ASG_2.id
+  alb_target_group_arn = aws_alb_target_group.alb_front2.arn
 }
 
 resource "aws_lb_listener" "listener_A" {
@@ -51,8 +65,16 @@ resource "aws_lb_listener" "listener_A" {
   port = var.http_port
   default_action {
     type = "forward"
-    target_group_arn = aws_alb_target_group.alb_front.arn
+    forward {
+      target_group {
+        arn = aws_alb_target_group.alb_front.arn
+        weight = 80
+      }
+      target_group {
+        arn = aws_alb_target_group.alb_front2.arn
+        weight = 20
+      }
+    }
   }
-
   depends_on = [aws_alb_target_group.alb_front, aws_alb.ALB]
 }
