@@ -1,4 +1,4 @@
-    ### Rate based ###
+### Rate based ###
 resource "aws_wafv2_web_acl" "wec_acl" {
   name = "web-acl"
   scope = "REGIONAL"
@@ -38,7 +38,7 @@ resource "aws_wafv2_web_acl" "wec_acl" {
   description = "Rate based rule. 500"
 }
 
-    ### Region based ###
+### Region based ###
 resource "aws_wafv2_web_acl" "web2_acl" {
   name = "web2_acl"
   scope = "REGIONAL"
@@ -76,7 +76,7 @@ resource "aws_wafv2_web_acl" "web2_acl" {
   description = "Region Based Rule. Block USA and CHINA"
 }
 
-    ### Region based ###
+### Region based ###
 resource "aws_wafv2_web_acl" "web3_acl" {
   name = "web3_acl"
   scope = "REGIONAL"
