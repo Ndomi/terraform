@@ -1,0 +1,7 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Create s3 bucket
+      s3_bucket:
+        name: example.ndomi.state-1
+        state: present

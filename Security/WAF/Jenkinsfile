@@ -1,0 +1,55 @@
+node {
+    stage('Preparation'){
+        checkout scm
+    }
+    stage('S3 - Create bucket'){
+        dir('/var/lib/jenkins/workspace/Production/module/modules/production'){
+            sh '/bin/ansible-playbook s3-storage.yml'
+        }
+    }
+
+    stage('production preparation'){
+        dir('/var/lib/jenkins/workspace/Production/module/modules/production'){
+            script {
+                currentBuild.displayName = params.version
+            }
+            sh '/usr/local/bin/terraform init -input=false'
+        }
+    }
+
+    stage('Plan'){
+        dir('/var/lib/jenkins/workspace/Production/module/modules/production'){
+            script {
+                currentBuild.displayName = params.version
+            }
+            sh '/usr/local/bin/terraform workspace select ${environment}'
+            sh "/usr/local/bin/terraform plan -input=false -out tfplan"
+            sh '/usr/local/bin/terraform show -no-color tfplan > tfplan.txt'
+        }
+    }
+    stage('Approval') {
+        input('Do you want to apply the plan ??')
+    }
+
+    stage ('Apply') {
+        dir('/var/lib/jenkins/workspace/Production/module/modules/production'){
+            sh "/usr/local/bin/terraform apply -input=false tfplan"
+        }
+    }
+    post {
+        fixed {
+            script {
+                if (env.BRANCH_NAME == 'main') {
+                    slackSend(color: '#00FF00', message: "BACK TO GREEN: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                }
+            }
+        }
+        failure {
+            script {
+                if (env.BRANCH_NAME == 'main') {
+                    slackSend(color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                }
+            }
+        }
+    }
+}
