@@ -15,7 +15,7 @@ terraform {
   backend "s3" {
     encrypt = true
     bucket  = "example.ndomi.state-1"
-//    dynamodb_table = "dynamodb-terraform-state-lock"
+    dynamodb_table = "dynamodb-terraform-state-lock"
     region = "us-east-1"
     key    = "terraform.tfstate"
 
