@@ -13,7 +13,7 @@ node {
             script {
                 currentBuild.displayName = params.version
             }
-            sh '/usr/local/bin/terraform init -input=false'
+            sh '/usr/bin/terraform init -input=false'
         }
     }
 
@@ -33,7 +33,7 @@ node {
 
     stage ('Apply') {
         dir('/var/lib/jenkins/workspace/Build SonaQube/Security/WAF'){
-            sh "/usr/local/bin/terraform apply -input=false tfplan"
+            sh "/usr/bin/terraform apply -input=false tfplan"
         }
     }
     post {
