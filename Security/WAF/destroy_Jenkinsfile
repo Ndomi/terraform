@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Prod preparation'){
+            steps {
+                dir('/var/lib/jenkins/workspace/Build SonaQube/Security/WAF'){
+                    sh '/usr/local/bin/terraform init -input=false'
+                }
+            }
+        }
+
+        stage('Plan'){
+            steps {
+                dir('/var/lib/jenkins/workspace/Build SonaQube/Security/WAF'){
+                    sh "/usr/local/bin/terraform plan -input=false -out tfplan"
+                    sh '/usr/local/bin/terraform show -no-color tfplan > tfplan.txt'
+                }
+            }
+        }
+        stage('Approval') {
+            steps {
+                input('Do you want to apply the plan ??')
+            }
+        }
+
+        stage ('Destroy') {
+            steps {
+                dir('/var/lib/jenkins/workspace/Build SonaQube/Security/WAF'){
+                    sh "/usr/bin/terraform destroy --auto-approve"
+                }
+            }
+        }
+    }
+}
