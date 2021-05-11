@@ -10,19 +10,19 @@ node {
 
     stage('production preparation'){
         dir('/var/lib/jenkins/workspace/Build SonaQube/Security/WAF'){
-            script {
+/*             script {
                 currentBuild.displayName = params.version
-            }
+            } */
             sh '/usr/bin/terraform init -input=false'
         }
     }
 
     stage('Plan'){
         dir('/var/lib/jenkins/workspace/Build SonaQube/Security/WAF'){
-            script {
+/*             script {
                 currentBuild.displayName = params.version
-            }
-            sh '/usr/local/bin/terraform workspace select ${environment}'
+            } */
+//             sh '/usr/local/bin/terraform workspace select ${environment}'
             sh "/usr/local/bin/terraform plan -input=false -out tfplan"
             sh '/usr/local/bin/terraform show -no-color tfplan > tfplan.txt'
         }
