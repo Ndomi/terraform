@@ -36,7 +36,7 @@ node {
             sh "/usr/bin/terraform apply -input=false tfplan"
         }
     }
-    post {
+ /*    post {
         fixed {
             script {
                 if (env.BRANCH_NAME == 'main') {
@@ -51,5 +51,5 @@ node {
                 }
             }
         }
-    }
+    } */
 }
