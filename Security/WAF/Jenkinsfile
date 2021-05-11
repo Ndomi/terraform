@@ -23,8 +23,8 @@ node {
                 currentBuild.displayName = params.version
             } */
 //             sh '/usr/local/bin/terraform workspace select ${environment}'
-            sh "/usr/local/bin/terraform plan -input=false -out tfplan"
-            sh '/usr/local/bin/terraform show -no-color tfplan > tfplan.txt'
+            sh "/usr/bin/terraform plan -input=false -out tfplan"
+            sh '/usr/bin/terraform show -no-color tfplan > tfplan.txt'
         }
     }
     stage('Approval') {
