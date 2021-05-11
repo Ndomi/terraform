@@ -29,7 +29,7 @@ resource "aws_autoscaling_group" "ASG_1" {
   tag {
     key = "Name"
     propagate_at_launch = true
-    value = "Server B"
+    value = "Server A"
   }
 }
 
