@@ -5,7 +5,7 @@ pipeline {
         stage('Prod preparation'){
             steps {
                 dir('/var/lib/jenkins/workspace/Build SonaQube/Security/WAF'){
-                    sh '/usr/local/bin/terraform init -input=false'
+                    sh '/usr/bin/terraform init -input=false'
                 }
             }
         }
@@ -13,8 +13,8 @@ pipeline {
         stage('Plan'){
             steps {
                 dir('/var/lib/jenkins/workspace/Build SonaQube/Security/WAF'){
-                    sh "/usr/local/bin/terraform plan -input=false -out tfplan"
-                    sh '/usr/local/bin/terraform show -no-color tfplan > tfplan.txt'
+                    sh "/usr/bin/terraform plan -input=false -out tfplan"
+                    sh '/usr/bin/terraform show -no-color tfplan > tfplan.txt'
                 }
             }
         }
