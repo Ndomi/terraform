@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Resources:
+  MyCompanySG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: 'Enable SSH access via port 22'
+      SecurityGroupIngress:
+        # Finacne Team
+        - CidrIp: 10.0.48.0/24
+          FromPort: 22
+          ToPort: 22
+          IpProtocol: tcp
+        # MArketidng Team
+        - CidrIp: 10.0.122.0/24
+          FromPort: 22
+          ToPort: 22
+          IpProtocol: tcp
+        # Application Team
+        - CidrIp: 10.0.176.0/24
+          FromPort: 22
+          ToPort: 22
+          IpProtocol: tcp
+
+Outputs:
+  StackSSHSecurityGroup:
+    Description: 'The SSH Security Group for our Company'
+    Value: !Ref MyCompanySG
+    Export:
+      Name: SSHSecurityGroup

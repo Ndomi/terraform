@@ -1,0 +1,219 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: SonaQube Infra
+
+Parameters:
+  MyVPCCidr:
+    Description: 'My VPC Cidr ID'
+    Type: String
+    Default: "10.0.0.0/16"
+
+  MySubnetACidr:
+    Description: 'My Subnet A Cidr ID'
+    Type: String
+    Default: "10.0.1.0/28"
+
+  AvailabilityZoneA:
+    Description: 'My Subnet A Cidr ID'
+    Type: String
+    Default: "us-east-1a"
+    AllowedValues:
+      - us-east-1a
+      - us-east-1b
+      - us-east-1c
+
+  MySubnetBCidr:
+    Description: 'My Subnet B Cidr ID'
+    Type: String
+    Default: "10.0.2.0/28"
+
+  AvailabilityZoneB:
+    Description: 'My Subnet B Cidr ID'
+    Type: String
+    Default: "us-east-1d"
+    AllowedValues:
+      - us-east-1d
+      - us-east-1e
+      - us-east-1f
+
+  ApachePort:
+    Description: 'My apache port'
+    Type: String
+    Default: "80"
+    AllowedValues:
+      - 80
+      - 443
+
+  ApacheProtocol:
+    Description: 'My apache protcol'
+    Type: String
+    Default: "http"
+    AllowedValues:
+      - http
+      - https
+
+
+Resources:
+  MyVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref MyVPCCidr
+      InstanceTenancy: "default"
+
+#  MyInternetGateway:
+#    Type: AWS::EC2::InternetGateway
+#    Properties:
+#      Tags:
+#        - Key: Name
+#          Value: "IGW"
+#
+#  AttachVPCInternetGateway:
+#    Type: AWS::EC2::VPCGatewayAttachment
+#    Properties:
+#      InternetGatewayId: !Ref MyInternetGateway
+#      VpcId: !Ref MyVPC
+#
+#  MyElasticIP:
+#    Type: 'AWS::EC2::EIP'
+#
+#  MyNATGateWay:
+#    Type: AWS::EC2::NatGateway
+#    DependsOn: MyElasticIP
+#    Properties:
+#      AllocationId: !Ref MyElasticIP
+#      SubnetId: !Ref SubnetA
+
+  SubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Ref AvailabilityZoneA
+      CidrBlock: !Ref MySubnetACidr
+      Tags:
+        - Key: "Name"
+          Value: "Subnet A"
+      VpcId: !Ref MyVPC
+
+  SubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Ref AvailabilityZoneB
+      CidrBlock: !Ref MySubnetBCidr
+      Tags:
+        - Key: "Name"
+          Value: "Subnet B"
+      VpcId: !Ref MyVPC
+
+  ALBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "security group for ALB"
+      GroupName: "ALB_SG"
+      Tags:
+        - Key: Name
+          Value: "ALB SG"
+      VpcId: !Ref MyVPC
+      SecurityGroupIngress:
+        -
+          CidrIp: "0.0.0.0/0"
+          FromPort: 80
+          IpProtocol: "tcp"
+          ToPort: 80
+        -
+          CidrIp: "0.0.0.0/0"
+          FromPort: 443
+          IpProtocol: "tcp"
+          ToPort: 443
+
+  MyPublicRT:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref MyVPC
+      Tags:
+        - Key: Name
+          Value: "Private RT"
+
+  MyPublicRTAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref MyPublicRT
+      SubnetId: !Ref SubnetA
+#  MyNatGateway:
+#    Type: AWS::EC2::NatGateway
+#    Properties:
+#      AllocationId: !Ref MyElasticIP
+#      SubnetId: !Ref SubnetA
+#      Tags:
+#        - Key: Name
+#          Value: "My NAT GATEWAY"
+
+#  MyALB:
+#    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+#    Properties:
+#      Name: "My-ALB"
+#      Scheme: "internet-facing"
+#      Type: "application"
+#      IpAddressType: 'ipv4'
+#      Subnets:
+#        - !Ref SubnetA
+#        - !Ref SubnetB
+#      SecurityGroups:
+#        - !Ref ALBSecurityGroup
+#
+#  TargetGroup1:
+#    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+#    Properties:
+#      Name: "alb-front1"
+#      VpcId: !Ref MyVPC
+#      Port: 80
+#
+#      HealthCheckEnabled: true
+#      HealthCheckIntervalSeconds: 10
+#      HealthCheckPath: "/"
+#      Protocol: "HTTP"
+#      HealthCheckProtocol: "HTTP"
+#      HealthCheckTimeoutSeconds: 8
+#      UnhealthyThresholdCount: 5
+#      Matcher:
+#        HttpCode: "200"
+#      HealthyThresholdCount: 10
+#      Tags:
+#        - Key: Name
+#          Value: "front_http1"
+#
+#  TargetGroup2:
+#    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+#    Properties:
+#      Name: "alb-front2"
+#      VpcId: !Ref MyVPC
+#      Port: 80
+#
+#      HealthCheckEnabled: true
+#      HealthCheckIntervalSeconds: 10
+#      HealthCheckPath: "/"
+#      Protocol: "HTTP"
+#      HealthCheckProtocol: "HTTP"
+#      HealthCheckTimeoutSeconds: 8
+#      UnhealthyThresholdCount: 5
+#      Matcher:
+#        HttpCode: "200"
+#      HealthyThresholdCount: 10
+#      Tags:
+#        - Key: Name
+#          Value: "front_http2"
+#
+#  ListenerA:
+#    Type: AWS::ElasticLoadBalancingV2::Listener
+#    Properties:
+#      LoadBalancerArn: !Ref MyALB
+#      Port: 80
+#      Protocol: "tcp"
+#      DefaultActions:
+#        -
+#          Type: "forward"
+#          TargetGroupArn: !Ref TargetGroup1
+#          Weight: 80
+#        -
+#          Type: "forward"
+#          TargetGroupArn: !Ref TargetGroup2
+#          Weight: 20
+
+

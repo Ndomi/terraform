@@ -1,0 +1,169 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: SonaQube Infra
+
+Parameters:
+  MyVPCCidr:
+    Description: 'My VPC Cidr ID'
+    Type: String
+    Default: "10.0.0.0/16"
+
+  MySubnetACidr:
+    Description: 'My Subnet A Cidr ID'
+    Type: String
+    Default: "10.0.1.0/28"
+
+  AvailabilityZoneA:
+    Description: 'My Subnet A Cidr ID'
+    Type: String
+    Default: "us-east-1a"
+    AllowedValues:
+      - us-east-1a
+      - us-east-1b
+      - us-east-1c
+
+  MySubnetBCidr:
+    Description: 'My Subnet B Cidr ID'
+    Type: String
+    Default: "10.0.2.0/28"
+
+  AvailabilityZoneB:
+    Description: 'My Subnet B Cidr ID'
+    Type: String
+    Default: "us-east-1b"
+
+  MySubnetCCidr:
+    Description: 'My Bastion Host Cidr ID'
+    Type: String
+    Default: "10.0.3.0/28"
+
+  AvailabilityZoneC:
+    Description: 'My Bastion Host AZ'
+    Type: String
+    Default: "us-east-1c"
+
+  ApachePort:
+    Description: 'My apache port'
+    Type: String
+    Default: "80"
+    AllowedValues:
+      - 80
+      - 443
+
+  ApacheProtocol:
+    Description: 'My apache protcol'
+    Type: String
+    Default: "http"
+    AllowedValues:
+      - http
+      - https
+
+  MyInstanceType:
+    Description: 'Select the Instance type'
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t2.micro
+      - t2.nano
+      - t2.small
+
+  MyKeyName:
+    Description: 'Select the key name from th list'
+    Type: AWS::EC2::KeyPair::KeyName
+    Default: New_Key
+
+Resources:
+  MyVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref MyVPCCidr
+      InstanceTenancy: "default"
+
+  SubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Ref AvailabilityZoneA
+      CidrBlock: !Ref MySubnetACidr
+      VpcId: !Ref MyVPC
+      Tags:
+        - Key: "Name"
+          Value: "Subnet A"
+
+  SubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Ref AvailabilityZoneA
+      CidrBlock: !Ref MySubnetBCidr
+      VpcId: !Ref MyVPC
+      Tags:
+        - Key: "Name"
+          Value: "Subnet B"
+
+  SubnetC:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Ref AvailabilityZoneC
+      CidrBlock: !Ref MySubnetCCidr
+      VpcId: !Ref MyVPC
+      Tags:
+        - Key: "Name"
+          Value: "Bastion Host"
+
+  SSHSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: 'My SSH SG'
+      SecurityGroupIngress:
+        - IpProtocol: 'tcp'
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: '102.65.85.45/32'
+
+  SecurityGroupA:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: 'Private SG'
+      SecurityGroupIngress:
+        - IpProtocol: 'tcp'
+          FromPort: '22'
+          ToPort: '22'
+          Secur
+#           SSHSecurityGroup.GroupId
+
+  MyDevEC2InstanceA:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: ami-0d5eff06f840b45e9
+      InstanceType: !Ref MyInstanceType
+      KeyName: !Ref MyKeyName
+      Tags:
+        - Key: "Name"
+          Value: "Custom EC2 A"
+      SecurityGroups:
+        - !Ref SecurityGroupA
+      SubnetId: !Ref SubnetA
+
+  MyDevEC2InstanceB:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: ami-0d5eff06f840b45e9
+      InstanceType: !Ref MyInstanceType
+      KeyName: !Ref MyKeyName
+      Tags:
+        - Key: "Name"
+          Value: "Custom EC2 B"
+      SecurityGroups:
+        - !Ref SecurityGroupA
+      SubnetId: !Ref SubnetB
+
+  MyDevEC2InstanceC:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: ami-0d5eff06f840b45e9
+      InstanceType: !Ref MyInstanceType
+      KeyName: !Ref MyKeyName
+      Tags:
+        - Key: "Name"
+          Value: "Bastion Host"
+      SecurityGroups:
+        - !Ref SSHSecurityGroup
+      SubnetId: !Ref SubnetC
